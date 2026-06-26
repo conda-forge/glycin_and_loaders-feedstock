@@ -21,21 +21,38 @@ outputs:
   - package:
       name: ${{ name|lower }}
     build:
-      script: |
-        meson setup ${MESON_ARGS} \
-            --prefix=$PREFIX \
-            --default-library=shared \
-            --wrap-mode=nofallback \
-            -Dvapi=false \
-            -Dtests=false \
-            -Dglycin-thumbnailer=false \
-            -Dglycin-loaders=false \
-            -Dlibglycin=true \
-            -Dlibglycin-gtk4=false \
-            $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
+      script:
+      - if: win
+        then: |
+          meson setup %MESON_ARGS% ^
+            --prefix=%LIBRARY_PREFIX% ^
+            --default-library=shared ^
+            --wrap-mode=nofallback ^
+            -Dvapi=false ^
+            -Dtests=false ^
+            -Dglycin-thumbnailer=false ^
+            -Dglycin-loaders=false ^
+            -Dlibglycin=true ^
+            -Dlibglycin-gtk4=false ^
             builddir
-        ninja -v -C builddir -j ${CPU_COUNT}
-        ninja -C builddir install -j ${CPU_COUNT}
+          ninja -v -C builddir -j %CPU_COUNT%
+          ninja -C builddir install -j %CPU_COUNT%
+      - if: unix
+        then: |
+          meson setup ${MESON_ARGS} \
+              --prefix=$PREFIX \
+              --default-library=shared \
+              --wrap-mode=nofallback \
+              -Dvapi=false \
+              -Dtests=false \
+              -Dglycin-thumbnailer=false \
+              -Dglycin-loaders=false \
+              -Dlibglycin=true \
+              -Dlibglycin-gtk4=false \
+              $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
+              builddir
+          ninja -v -C builddir -j ${CPU_COUNT}
+          ninja -C builddir install -j ${CPU_COUNT}
     requirements:
       build:
         - ${{ compiler('c') }}
@@ -135,21 +152,38 @@ outputs:
   - package:
       name: ${{ name|lower }}-gtk4
     build:
-      script: |
-        meson setup ${MESON_ARGS} \
-            --prefix=$PREFIX \
-            --default-library=shared \
-            --wrap-mode=nofallback \
-            -Dvapi=false \
-            -Dtests=false \
-            -Dglycin-thumbnailer=false \
-            -Dglycin-loaders=false \
-            -Dlibglycin=false \
-            -Dlibglycin-gtk4=true \
-            $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
+      script:
+      - if: win
+        then: |
+          meson setup %MESON_ARGS% ^
+            --prefix=%LIBRARY_PREFIX% ^
+            --default-library=shared ^
+            --wrap-mode=nofallback ^
+            -Dvapi=false ^
+            -Dtests=false ^
+            -Dglycin-thumbnailer=false ^
+            -Dglycin-loaders=false ^
+            -Dlibglycin=false ^
+            -Dlibglycin-gtk4=true ^
             builddir
-        ninja -v -C builddir -j ${CPU_COUNT}
-        ninja -C builddir install -j ${CPU_COUNT}
+          ninja -v -C builddir -j %CPU_COUNT%
+          ninja -C builddir install -j %CPU_COUNT%
+      - if: unix
+        then: |
+          meson setup ${MESON_ARGS} \
+              --prefix=$PREFIX \
+              --default-library=shared \
+              --wrap-mode=nofallback \
+              -Dvapi=false \
+              -Dtests=false \
+              -Dglycin-thumbnailer=false \
+              -Dglycin-loaders=false \
+              -Dlibglycin=false \
+              -Dlibglycin-gtk4=true \
+              $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
+              builddir
+          ninja -v -C builddir -j ${CPU_COUNT}
+          ninja -C builddir install -j ${CPU_COUNT}
     requirements:
       build:
         - ${{ compiler('c') }}
