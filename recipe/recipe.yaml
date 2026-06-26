@@ -174,6 +174,7 @@ outputs:
             -Dintrospection=false ^
             builddir
           ninja -v -C builddir -j %CPU_COUNT%
+          copy "builddir\cargo-target\release\glycin_gtk4.dll.lib" "builddir\libglycin\glycin-gtk4-2.lib"
           ninja -C builddir install -j %CPU_COUNT%
       - if: unix
         then: |
