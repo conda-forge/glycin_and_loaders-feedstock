@@ -1,6 +1,6 @@
 context:
   name: glycin
-  version: "2.1.1"
+  version: "2.2.alpha.4"
   version_majmin: ${{ (version | split('.'))[:2] | join('.') }}
 
 recipe:
@@ -9,18 +9,18 @@ recipe:
 
 source:
   url: https://download.gnome.org/sources/glycin/${{ version_majmin }}/glycin-${{ version }}.tar.xz
-  sha256: 8e8e92e312b14d2c5f3a047bdc5305adcb9931ef0150cf74bf526a3741e6fb32
+  sha256: 568c22d6da8ff35b91c6e6aadae7a59c17a4b90c9c4928e0f61dd3a3171ab178
+  patches:
+    - patches/0001-non-linux-fixes.patch
 
 build:
-  number: 1
+  number: 3
 
 outputs:
 
   - package:
       name: ${{ name|lower }}
     build:
-      skip:
-        - not linux
       script: |
         meson setup ${MESON_ARGS} \
             --prefix=$PREFIX \
@@ -32,6 +32,7 @@ outputs:
             -Dglycin-loaders=false \
             -Dlibglycin=true \
             -Dlibglycin-gtk4=false \
+            $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
             builddir
         ninja -v -C builddir -j ${CPU_COUNT}
         ninja -C builddir install -j ${CPU_COUNT}
@@ -51,8 +52,10 @@ outputs:
         - glib
         - gobject-introspection
         - lcms2
-        - libseccomp
         - zlib
+        - if: linux
+          then:
+            - libseccomp
       run_exports:
         - ${{ pin_subpackage('glycin', upper_bound='x.x') }}
       ignore_run_exports:
@@ -108,7 +111,6 @@ outputs:
         - libheif
         - libjxl
         - librsvg
-        - libseccomp
         - libxml2-devel
         - xorg-xorgproto
         - zlib
@@ -132,8 +134,6 @@ outputs:
   - package:
       name: ${{ name|lower }}-gtk4
     build:
-      skip:
-        - not linux
       script: |
         meson setup ${MESON_ARGS} \
             --prefix=$PREFIX \
@@ -145,6 +145,7 @@ outputs:
             -Dglycin-loaders=false \
             -Dlibglycin=false \
             -Dlibglycin-gtk4=true \
+            $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
             builddir
         ninja -v -C builddir -j ${CPU_COUNT}
         ninja -C builddir install -j ${CPU_COUNT}
@@ -165,8 +166,10 @@ outputs:
         - gobject-introspection
         - gtk4 >= 4.16.0
         - lcms2
-        - libseccomp
         - zlib
+        - if: linux
+          then:
+            - libseccomp
       run:
         - ${{ pin_subpackage('glycin', exact=True) }}
       run_exports:
