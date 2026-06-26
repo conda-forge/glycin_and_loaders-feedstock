@@ -34,8 +34,10 @@ outputs:
             -Dglycin-loaders=false ^
             -Dlibglycin=true ^
             -Dlibglycin-gtk4=false ^
+            -Dintrospection=false ^
             builddir
           ninja -v -C builddir -j %CPU_COUNT%
+          copy "builddir\cargo-target\release\glycin.dll.lib" "builddir\libglycin\glycin-2.lib"
           ninja -C builddir install -j %CPU_COUNT%
       - if: unix
         then: |
@@ -83,7 +85,11 @@ outputs:
     tests:
       - package_contents:
           lib:
-            - libglycin-2
+            - if: not win
+              then: libglycin-2
+          files:
+            - if: win
+              then: Library/bin/glycin-2-0.dll
 
   - package:
       name: ${{ name|lower }}-loaders
@@ -165,6 +171,7 @@ outputs:
             -Dglycin-loaders=false ^
             -Dlibglycin=false ^
             -Dlibglycin-gtk4=true ^
+            -Dintrospection=false ^
             builddir
           ninja -v -C builddir -j %CPU_COUNT%
           ninja -C builddir install -j %CPU_COUNT%
@@ -219,7 +226,11 @@ outputs:
     tests:
       - package_contents:
           lib:
-            - libglycin-gtk4-2
+            - if: not win
+              then: libglycin-gtk4-2
+          files:
+            - if: win
+              then: Library/bin/glycin-gtk4-2-0.dll
 
 about:
   homepage: https://gitlab.gnome.org/GNOME/glycin
