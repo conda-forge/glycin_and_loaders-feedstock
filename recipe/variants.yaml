@@ -1,3 +1,7 @@
 c_stdlib_version:
   - if: linux
     then: 2.34
+channel_targets:
+  - conda-forge glycin_dev
+  - conda-forge glycin-loaders_dev
+  - conda-forge glycin-gtk4_dev
