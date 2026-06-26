@@ -1,0 +1,22 @@
+c_compiler:
+- vs2022
+c_stdlib:
+- vs
+channel_sources:
+- conda-forge
+channel_targets:
+- conda-forge glycin-gtk4_dev
+expat:
+- '2'
+fontconfig:
+- '2'
+freetype:
+- '2'
+glib:
+- '2'
+lcms2:
+- '2'
+target_platform:
+- win-64
+zlib:
+- '1'

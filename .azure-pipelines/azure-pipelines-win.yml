@@ -8,8 +8,26 @@ jobs:
     vmImage: windows-2022
   strategy:
     matrix:
-      win_64_:
-        CONFIG: win_64_
+      win_64_channel_targetsconda-forge_glycin-gtk4_dev:
+        CONFIG: win_64_channel_targetsconda-forge_glycin-gtk4_dev
+        UPLOAD_PACKAGES: 'True'
+        build_workspace_dir: D:\\bld\\
+        free_disk_space: skip
+        pagefile_size: 0
+        resize_partitions: false
+        store_build_artifacts: false
+        tools_install_dir: D:\Miniforge
+      win_64_channel_targetsconda-forge_glycin-loaders_dev:
+        CONFIG: win_64_channel_targetsconda-forge_glycin-loaders_dev
+        UPLOAD_PACKAGES: 'True'
+        build_workspace_dir: D:\\bld\\
+        free_disk_space: skip
+        pagefile_size: 0
+        resize_partitions: false
+        store_build_artifacts: false
+        tools_install_dir: D:\Miniforge
+      win_64_channel_targetsconda-forge_glycin_dev:
+        CONFIG: win_64_channel_targetsconda-forge_glycin_dev
         UPLOAD_PACKAGES: 'True'
         build_workspace_dir: D:\\bld\\
         free_disk_space: skip
