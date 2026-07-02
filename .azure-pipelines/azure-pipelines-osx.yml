@@ -8,8 +8,28 @@ jobs:
     vmImage: $(VMIMAGE)
   strategy:
     matrix:
-      osx_64_:
-        CONFIG: osx_64_
+      osx_64_channel_targetsconda-forge_glycin-gtk4_dev:
+        CONFIG: osx_64_channel_targetsconda-forge_glycin-gtk4_dev
+        UPLOAD_PACKAGES: 'True'
+        VMIMAGE: macOS-15
+        build_workspace_dir: ~/miniforge3/conda-bld
+        free_disk_space: skip
+        pagefile_size: 0
+        resize_partitions: false
+        store_build_artifacts: false
+        tools_install_dir: ~/miniforge3
+      osx_64_channel_targetsconda-forge_glycin-loaders_dev:
+        CONFIG: osx_64_channel_targetsconda-forge_glycin-loaders_dev
+        UPLOAD_PACKAGES: 'True'
+        VMIMAGE: macOS-15
+        build_workspace_dir: ~/miniforge3/conda-bld
+        free_disk_space: skip
+        pagefile_size: 0
+        resize_partitions: false
+        store_build_artifacts: false
+        tools_install_dir: ~/miniforge3
+      osx_64_channel_targetsconda-forge_glycin_dev:
+        CONFIG: osx_64_channel_targetsconda-forge_glycin_dev
         UPLOAD_PACKAGES: 'True'
         VMIMAGE: macOS-15
         build_workspace_dir: ~/miniforge3/conda-bld

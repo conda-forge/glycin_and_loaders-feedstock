@@ -1,57 +1,7 @@
-About glycin_and_loaders-feedstock
-==================================
+About glycin-feedstock
+======================
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/glycin_and_loaders-feedstock/blob/main/LICENSE.txt)
-
-
-About glycin_and_loaders
-------------------------
-
-Home: https://gitlab.gnome.org/GNOME/glycin
-
-Package license: LGPL-2.1-or-later
-
-Summary: Sandboxed and extendable image loading
-
-Development: https://gitlab.gnome.org/GNOME/glycin
-
-Glycin allows to decode, edit, and create images and
-read metadata. The decoding happens in sandboxed modular
-image loaders and editors.
-
-
-About glycin
-------------
-
-Home: https://gitlab.gnome.org/GNOME/glycin
-
-Package license: LGPL-2.1-or-later
-
-Summary: Sandboxed and extendable image loading
-
-Development: https://gitlab.gnome.org/GNOME/glycin
-
-Glycin allows to decode, edit, and create images and
-read metadata. The decoding happens in sandboxed modular
-image loaders and editors.
-
-About glycin-gtk4
------------------
-
-Home: https://gitlab.gnome.org/GNOME/glycin
-
-Package license: LGPL-2.1-or-later
-
-Summary: Sandboxed and extendable image loading
-
-Development: https://gitlab.gnome.org/GNOME/glycin
-
-Glycin allows to decode, edit, and create images and
-read metadata. The decoding happens in sandboxed modular
-image loaders and editors.
-
-About glycin-loaders
---------------------
 
 Home: https://gitlab.gnome.org/GNOME/glycin
 
@@ -90,17 +40,45 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>osx_64</td>
+              <td>osx_64_channel_targetsconda-forge_glycin-gtk4_dev</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=28639&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_channel_targetsconda-forge_glycin-gtk4_dev" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>win_64</td>
+              <td>osx_64_channel_targetsconda-forge_glycin-loaders_dev</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=28639&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=win&configuration=win%20win_64_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_channel_targetsconda-forge_glycin-loaders_dev" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_channel_targetsconda-forge_glycin_dev</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=28639&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_channel_targetsconda-forge_glycin_dev" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_channel_targetsconda-forge_glycin-gtk4_dev</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=28639&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=win&configuration=win%20win_64_channel_targetsconda-forge_glycin-gtk4_dev" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_channel_targetsconda-forge_glycin-loaders_dev</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=28639&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=win&configuration=win%20win_64_channel_targetsconda-forge_glycin-loaders_dev" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>win_64_channel_targetsconda-forge_glycin_dev</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=28639&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/glycin_and_loaders-feedstock?branchName=main&jobName=win&configuration=win%20win_64_channel_targetsconda-forge_glycin_dev" alt="variant">
                 </a>
               </td>
             </tr>
@@ -120,17 +98,17 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-glycin--gtk4-green.svg)](https://anaconda.org/conda-forge/glycin-gtk4) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/glycin-gtk4.svg)](https://anaconda.org/conda-forge/glycin-gtk4) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/glycin-gtk4.svg)](https://anaconda.org/conda-forge/glycin-gtk4) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/glycin-gtk4.svg)](https://anaconda.org/conda-forge/glycin-gtk4) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-glycin--loaders-green.svg)](https://anaconda.org/conda-forge/glycin-loaders) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/glycin-loaders.svg)](https://anaconda.org/conda-forge/glycin-loaders) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/glycin-loaders.svg)](https://anaconda.org/conda-forge/glycin-loaders) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/glycin-loaders.svg)](https://anaconda.org/conda-forge/glycin-loaders) |
 
-Installing glycin_and_loaders
-=============================
+Installing glycin
+=================
 
-Installing `glycin_and_loaders` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `glycin` from the `conda-forge/label/glycin-loaders_dev` channel can be achieved by adding `conda-forge/label/glycin-loaders_dev` to your channels with:
 
 ```
-conda config --add channels conda-forge
+conda config --add channels conda-forge/label/glycin-loaders_dev
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `glycin, glycin-gtk4, glycin-loaders` can be installed with `conda`:
+Once the `conda-forge/label/glycin-loaders_dev` channel has been enabled, `glycin, glycin-gtk4, glycin-loaders` can be installed with `conda`:
 
 ```
 conda install glycin glycin-gtk4 glycin-loaders
@@ -145,26 +123,26 @@ mamba install glycin glycin-gtk4 glycin-loaders
 It is possible to list all of the versions of `glycin` available on your platform with `conda`:
 
 ```
-conda search glycin --channel conda-forge
+conda search glycin --channel conda-forge/label/glycin-loaders_dev
 ```
 
 or with `mamba`:
 
 ```
-mamba search glycin --channel conda-forge
+mamba search glycin --channel conda-forge/label/glycin-loaders_dev
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search glycin --channel conda-forge
+mamba repoquery search glycin --channel conda-forge/label/glycin-loaders_dev
 
 # List packages depending on `glycin`:
-mamba repoquery whoneeds glycin --channel conda-forge
+mamba repoquery whoneeds glycin --channel conda-forge/label/glycin-loaders_dev
 
 # List dependencies of `glycin`:
-mamba repoquery depends glycin --channel conda-forge
+mamba repoquery depends glycin --channel conda-forge/label/glycin-loaders_dev
 ```
 
 
@@ -209,17 +187,17 @@ Terminology
                   produce the finished article (built conda distributions)
 
 
-Updating glycin_and_loaders-feedstock
-=====================================
+Updating glycin-feedstock
+=========================
 
-If you would like to improve the glycin_and_loaders recipe or build a new
+If you would like to improve the glycin recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `conda-forge` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `conda-forge` channel.
-Note that all branches in the conda-forge/glycin_and_loaders-feedstock are
+Note that all branches in the conda-forge/glycin-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks, and branches in the main repository should only be used to
 build distinct package versions.

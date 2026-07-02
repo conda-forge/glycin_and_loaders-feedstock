@@ -1,0 +1,175 @@
+diff --git a/libglycin/build.rs b/libglycin/build.rs
+index 4b2c5ee..c73ec44 100644
+--- a/libglycin/build.rs
++++ b/libglycin/build.rs
+@@ -1,5 +1,31 @@
+ fn main() {
+     let major = std::env::var("CARGO_PKG_VERSION_MAJOR").unwrap();
+-    // Set soname of library
+-    println!("cargo:rustc-cdylib-link-arg=-Wl,-soname,libglycin-{major}.so.0");
++    let target_os = std::env::var("CARGO_CFG_TARGET_OS").unwrap();
++    let target_env = std::env::var("CARGO_CFG_TARGET_ENV").unwrap_or_default();
++
++    match (target_os.as_str(), target_env.as_str()) {
++        // Set soname of library
++        ("linux", _) => println!("cargo:rustc-cdylib-link-arg=-Wl,-soname,libglycin-{major}.so.0"),
++        ("macos", _) =>  println!("cargo:rustc-cdylib-link-arg=-Wl,-install_name,@rpath/libglycin-{major}.0.dylib"),
++        ("windows", "msvc") => {
++            // The import library (*.lib) always points at whatever /OUT:
++            // filename the DLL was linked with, so the final installed
++            // name has to be given to Cargo directly here
++            let out_dir = std::env::var("OUT_DIR").unwrap();
++            let profile_dir = std::path::Path::new(&out_dir)
++                .ancestors()
++                .nth(3)
++                .unwrap();
++            println!(
++                "cargo:rustc-cdylib-link-arg=/OUT:{}",
++                profile_dir.join(format!("glycin-{major}-0.dll")).display()
++            );
++            println!(
++                "cargo:rustc-cdylib-link-arg=/IMPLIB:{}",
++                profile_dir.join(format!("glycin-{major}.lib")).display()
++            );
++        }
++        ("windows", "gnu") => {}
++        _ => {}
++    }
+ }
+diff --git a/libglycin/libglycin-gtk4/build.rs b/libglycin/libglycin-gtk4/build.rs
+index fee26cc..f615476 100644
+--- a/libglycin/libglycin-gtk4/build.rs
++++ b/libglycin/libglycin-gtk4/build.rs
+@@ -1,7 +1,33 @@
+ fn main() {
+     let major = std::env::var("CARGO_PKG_VERSION_MAJOR").unwrap();
+-    // Set soname of library
+-    println!("cargo:rustc-cdylib-link-arg=-Wl,-soname,libglycin-gtk4-{major}.so.0");
++    let target_os = std::env::var("CARGO_CFG_TARGET_OS").unwrap();
++    let target_env = std::env::var("CARGO_CFG_TARGET_ENV").unwrap_or_default();
++
++    match (target_os.as_str(), target_env.as_str()) {
++        // Set soname of library
++        ("linux", _) => println!("cargo:rustc-cdylib-link-arg=-Wl,-soname,libglycin-gtk4-{major}.so.0"),
++        ("macos", _) => println!("cargo:rustc-cdylib-link-arg=-Wl,-install_name,@rpath/libglycin-gtk4-{major}.0.dylib"),
++        ("windows", "msvc") => {
++            // The import library (*.lib) always points at whatever /OUT:
++            // filename the DLL was linked with, so the final installed
++            // name has to be given to Cargo directly here
++            let out_dir = std::env::var("OUT_DIR").unwrap();
++            let profile_dir = std::path::Path::new(&out_dir)
++                .ancestors()
++                .nth(3)
++                .expect("OUT_DIR does not have the expected Cargo layout");
++            println!(
++                "cargo:rustc-cdylib-link-arg=/OUT:{}",
++                profile_dir.join(format!("glycin-gtk4-{major}-0.dll")).display()
++            );
++            println!(
++                "cargo:rustc-cdylib-link-arg=/IMPLIB:{}",
++                profile_dir.join(format!("glycin-gtk4-{major}.lib")).display()
++            );
++        }
++        ("windows", "gnu") => {}
++        _ => {}
++    }
+ 
+     system_deps::Config::new().probe().unwrap();
+ }
+diff --git a/libglycin/meson.build b/libglycin/meson.build
+index 12cbd5f..fdc2733 100644
+--- a/libglycin/meson.build
++++ b/libglycin/meson.build
+@@ -5,7 +5,7 @@ endif
+ libglycin_deps = [
+     dependency('fontconfig', version: fontconfig_req),
+     dependency('gio-2.0', version: gio_req),
+-    dependency('libseccomp', version: seccomp_req),
++    dependency('libseccomp', version: seccomp_req, required: host_machine.system() == 'linux'),
+     dependency('lcms2', version: lcms2_req),
+ ]
+ 
+@@ -53,6 +53,16 @@ endif
+ 
+ global_libglycin_gir = 'non-existent'
+ 
++cc = meson.get_compiler('c')
++if host_machine.system() == 'darwin'
++    lib_ext = 'dylib'
++elif host_machine.system() == 'windows'
++    lib_ext = 'dll'
++else
++    lib_ext = 'so'
++endif
++windows_msvc = cc.get_argument_syntax() == 'msvc'
++
+ foreach package : packages
+     suffix = package['suffix']
+     namespace_suffix = package['namespace_suffix']
+@@ -72,7 +82,16 @@ foreach package : packages
+         endif
+     endif
+ 
+-    cargo_output = cargo_target_dir / rust_target / f'libglycin@suffix@.so'.replace('-', '_')
++    libglycin_target_name = f'glycin@suffix@-2'
++
++    if windows_msvc
++        win_dll_name = f'@libglycin_target_name@-0.dll'
++        win_implib_name = f'@libglycin_target_name@.lib'
++        cargo_output = cargo_target_dir / rust_target / win_dll_name
++        cargo_implib_output = cargo_target_dir / rust_target / win_implib_name
++    else
++        cargo_output = cargo_target_dir / rust_target / ('lib' + f'glycin@suffix@'.replace('-', '_') + '.' + lib_ext)
++    endif
+ 
+     # Build library with Rust
+     libglycin = custom_target(
+@@ -103,12 +122,13 @@ foreach package : packages
+ 
+     # We need a shim "lib" object to pass to "generate_gir" later
+     libglycin_shim = library(
+-        f'glycin@suffix@-2',
++        libglycin_target_name,
+         f'include/glycin@suffix@.h',
+         soversion: '0',
+         link_with: link_with,
+         include_directories: 'include/',
+         dependencies: deps,
++        link_args: windows_msvc ? ['/NOENTRY'] : [],
+         # Mark dirty for "generate_gir" if the header or the rust generated .so changes
+         link_depends: [
+             # For unknown reasons the header triggers repeated gir regenerates until something else changes
+@@ -140,12 +160,31 @@ foreach package : packages
+         ],
+     )
+ 
++    copy_deps = [libglycin_copy_library]
++
++    if windows_msvc
++        shim_import_lib = meson.current_build_dir() / win_implib_name
++        libglycin_copy_import_lib = custom_target(
++            f'libglycin@suffix@-copy-import-lib',
++            depends: libglycin_shim,
++            build_always_stale: true,
++            build_by_default: true,
++            output: f'would-overlap-with-import-library()@suffix@',
++            command: [
++                'cp',
++                '-a', cargo_implib_output,
++                shim_import_lib,
++            ],
++        )
++        copy_deps += libglycin_copy_import_lib
++    endif
++
+     install_headers(f'include/glycin@suffix@.h', subdir: f'glycin@suffix@-2')
+ 
+     # Generate a dependency such that the following targets only happen
+-    # after the .so file has been copied to the correct place
++    # after the .so/.lib file has been copied to the correct place
+     libglycin_copy_library_as_dep = declare_dependency(
+-        sources: libglycin_copy_library,
++        sources: copy_deps,
+     )
+ 
+     if suffix == ''
