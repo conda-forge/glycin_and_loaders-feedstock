@@ -34,11 +34,13 @@ outputs:
             -Dglycin-loaders=false ^
             -Dlibglycin=true ^
             -Dlibglycin-gtk4=false ^
-            -Dintrospection=false ^
             builddir
           ninja -v -C builddir -j %CPU_COUNT%
           copy "builddir\cargo-target\release\glycin.dll.lib" "builddir\libglycin\glycin-2.lib"
           ninja -C builddir install -j %CPU_COUNT%
+      - if: osx
+        then: |
+          export LDFLAGS="${LDFLAGS//-Wl,-dead_strip_dylibs/}"
       - if: unix
         then: |
           meson setup ${MESON_ARGS} \
@@ -51,7 +53,6 @@ outputs:
               -Dglycin-loaders=false \
               -Dlibglycin=true \
               -Dlibglycin-gtk4=false \
-              $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
               builddir
           ninja -v -C builddir -j ${CPU_COUNT}
           ninja -C builddir install -j ${CPU_COUNT}
@@ -171,11 +172,13 @@ outputs:
             -Dglycin-loaders=false ^
             -Dlibglycin=false ^
             -Dlibglycin-gtk4=true ^
-            -Dintrospection=false ^
             builddir
           ninja -v -C builddir -j %CPU_COUNT%
           copy "builddir\cargo-target\release\glycin_gtk4.dll.lib" "builddir\libglycin\glycin-gtk4-2.lib"
           ninja -C builddir install -j %CPU_COUNT%
+      - if: osx
+        then: |
+          export LDFLAGS="${LDFLAGS//-Wl,-dead_strip_dylibs/}"
       - if: unix
         then: |
           meson setup ${MESON_ARGS} \
@@ -188,7 +191,6 @@ outputs:
               -Dglycin-loaders=false \
               -Dlibglycin=false \
               -Dlibglycin-gtk4=true \
-              $([ "$(uname)" != "Linux" ] && echo "-Dintrospection=false") \
               builddir
           ninja -v -C builddir -j ${CPU_COUNT}
           ninja -C builddir install -j ${CPU_COUNT}
