@@ -26,6 +26,8 @@ lcms2:
 - '2'
 libheif:
 - '1.23'
+libjxl:
+- '0.11'
 librsvg:
 - '2'
 libxml2_devel:
