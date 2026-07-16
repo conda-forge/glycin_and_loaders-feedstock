@@ -8,13 +8,13 @@ recipe:
   version: ${{ version }}
 
 source:
-  url: https://download.gnome.org/sources/glycin/${{ version_majmin }}/glycin-${{ version }}.tar.xz
-  sha256: 568c22d6da8ff35b91c6e6aadae7a59c17a4b90c9c4928e0f61dd3a3171ab178
-  patches:
-    - patches/0001-non-linux-fixes.patch
+#  url: https://download.gnome.org/sources/glycin/${{ version_majmin }}/glycin-${{ version }}.tar.xz
+#  sha256: 568c22d6da8ff35b91c6e6aadae7a59c17a4b90c9c4928e0f61dd3a3171ab178
+  git: https://gitlab.gnome.org/GNOME/glycin.git
+  rev: fdd40bc44cb27eb5ab8b1f9a5192b9127480d263
 
 build:
-  number: 3
+  number: 4
 
 outputs:
 
@@ -67,15 +67,14 @@ outputs:
         - rust
       host:
         - expat
-        - fontconfig
         - freetype
         - glib
         - gobject-introspection
-        - lcms2
         - zlib
         - if: linux
           then:
             - libseccomp
+            - fontconfig
       run_exports:
         - ${{ pin_subpackage('glycin', upper_bound='x.x') }}
       ignore_run_exports:
@@ -210,7 +209,6 @@ outputs:
         - glib
         - gobject-introspection
         - gtk4 >= 4.16.0
-        - lcms2
         - zlib
         - if: linux
           then:
@@ -224,7 +222,6 @@ outputs:
           - libexpat
           - libfreetype6
           - libzlib
-          - lcms2
           - libseccomp
     tests:
       - package_contents:
