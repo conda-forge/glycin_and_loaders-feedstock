@@ -175,6 +175,7 @@ outputs:
         - ${{ pin_subpackage('glycin', exact=True) }}
         - expat
         - freetype
+        - harfbuzz
         - glib
         - gobject-introspection
         - gtk4 >= 4.16.0
