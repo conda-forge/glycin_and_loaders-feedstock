@@ -1,6 +1,6 @@
 context:
   name: glycin
-  version: "2.2.1"
+  version: "2.2.2"
   version_majmin: ${{ (version | split('.'))[:2] | join('.') }}
 
 recipe:
@@ -9,7 +9,7 @@ recipe:
 
 source:
   url: https://download.gnome.org/sources/glycin/${{ version_majmin }}/glycin-${{ version }}.tar.xz
-  sha256: 937ae571d76c0de5e59db944d1194981360be37ee97875729781bc3816ddeafe
+  sha256: 3771adf026d87545adbc59694ee8b05824a2938b37999f8dd70e6cf3a5f7d31c
 
 build:
   number: 0
@@ -113,6 +113,7 @@ outputs:
         - freetype
         - glib
         - gobject-introspection
+        - harfbuzz
         - libheif
         - libjxl
         - librsvg
@@ -126,6 +127,7 @@ outputs:
         by_name:
           - libexpat
           - libfreetype6
+          - harfbuzz
           - libxml2-16
           - libzlib
           - libseccomp
@@ -173,6 +175,7 @@ outputs:
         - ${{ pin_subpackage('glycin', exact=True) }}
         - expat
         - freetype
+        - harfbuzz
         - glib
         - gobject-introspection
         - gtk4 >= 4.16.0
