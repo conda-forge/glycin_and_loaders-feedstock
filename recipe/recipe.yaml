@@ -113,6 +113,7 @@ outputs:
         - freetype
         - glib
         - gobject-introspection
+        - harfbuzz
         - libheif
         - libjxl
         - librsvg
@@ -126,6 +127,7 @@ outputs:
         by_name:
           - libexpat
           - libfreetype6
+          - harfbuzz
           - libxml2-16
           - libzlib
           - libseccomp
