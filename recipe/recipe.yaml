@@ -1,6 +1,6 @@
 context:
   name: glycin
-  version: "2.2.2"
+  version: "2.2.3"
   version_majmin: ${{ (version | split('.'))[:2] | join('.') }}
 
 recipe:
@@ -9,7 +9,7 @@ recipe:
 
 source:
   url: https://download.gnome.org/sources/glycin/${{ version_majmin }}/glycin-${{ version }}.tar.xz
-  sha256: 3771adf026d87545adbc59694ee8b05824a2938b37999f8dd70e6cf3a5f7d31c
+  sha256: a767776442fce1fea7bda0178b4c443d241c33ac72e0ef83c6e06caeaaa7d9fa
 
 build:
   number: 0
@@ -57,6 +57,10 @@ outputs:
           then:
             - libseccomp
             - fontconfig
+        # TODO: remove once conda-forge has migrated to libintl 1.x
+        - if: osx
+          then:
+            - libintl <1
       run_exports:
         - ${{ pin_subpackage('glycin', upper_bound='x.x') }}
       ignore_run_exports:
