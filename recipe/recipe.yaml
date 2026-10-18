@@ -57,6 +57,10 @@ outputs:
           then:
             - libseccomp
             - fontconfig
+        # TODO: remove once conda-forge has migrated to libintl 1.x
+        - if: osx
+          then:
+            - libintl <1
       run_exports:
         - ${{ pin_subpackage('glycin', upper_bound='x.x') }}
       ignore_run_exports:
