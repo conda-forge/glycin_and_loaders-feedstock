@@ -1,6 +1,6 @@
 context:
   name: glycin
-  version: "2.2.3"
+  version: "2.2.4"
   version_majmin: ${{ (version | split('.'))[:2] | join('.') }}
 
 recipe:
@@ -9,7 +9,7 @@ recipe:
 
 source:
   url: https://download.gnome.org/sources/glycin/${{ version_majmin }}/glycin-${{ version }}.tar.xz
-  sha256: a767776442fce1fea7bda0178b4c443d241c33ac72e0ef83c6e06caeaaa7d9fa
+  sha256: 3184e7c0f5fca272aee120d9646a2d160441b115cfeb6f9a75c9820be3b58bf5
 
 build:
   number: 0
