@@ -27,7 +27,7 @@ glib:
 libheif:
 - '1.23'
 libjxl:
-- '0.12'
+- '0.13'
 librsvg:
 - '2'
 libxml2_devel:
