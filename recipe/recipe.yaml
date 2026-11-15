@@ -45,7 +45,7 @@ outputs:
         - gobject-introspection
         - meson >=0.63.0
         - ninja
-        - pkg-config
+        - pkgconf
         - rust
       host:
         - expat
