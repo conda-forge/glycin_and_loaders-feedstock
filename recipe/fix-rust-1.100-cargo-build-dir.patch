@@ -1,0 +1,60 @@
+Subject: [PATCH] Fix Windows DLL output path with Cargo 1.100
+
+Cargo 1.100 changed the build script output layout from
+build/<crate>-<hash>/out to build/<crate>/<hash>/out. Both build scripts
+derive the profile directory with a fixed ancestor count, which now
+resolves to the build directory. The Windows DLL is linked to
+build/glycin-2-0.dll, and Meson looks for it in release/.
+
+Find the ancestor named build and use its parent. This works with both
+layouts.
+
+---
+ libglycin/build.rs                | 11 ++++++++---
+ libglycin/libglycin-gtk4/build.rs | 12 ++++++++----
+ 2 files changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/libglycin/build.rs b/libglycin/build.rs
+--- a/libglycin/build.rs
++++ b/libglycin/build.rs
+@@ -13,8 +13,15 @@ fn main() {
+             // The import library (*.lib) always points at whatever /OUT:
+             // filename the DLL was linked with, so the final installed
+             // name has to be given to Cargo directly here
+-            let out_dir = std::env::var("OUT_DIR").unwrap();
+-            let profile_dir = std::path::Path::new(&out_dir).ancestors().nth(3).unwrap();
++            // Newer Cargo versions use build/<crate>/<hash>/out instead of
++            // build/<crate>-<hash>/out, so find the profile directory relative
++            // to the "build" directory instead of a fixed ancestor count.
++            let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
++            let profile_dir = out_dir
++                .ancestors()
++                .find(|path| path.file_name() == Some(std::ffi::OsStr::new("build")))
++                .and_then(std::path::Path::parent)
++                .expect("OUT_DIR does not have the expected Cargo layout");
+             println!(
+                 "cargo:rustc-cdylib-link-arg=/OUT:{}",
+                 profile_dir
+diff --git a/libglycin/libglycin-gtk4/build.rs b/libglycin/libglycin-gtk4/build.rs
+--- a/libglycin/libglycin-gtk4/build.rs
++++ b/libglycin/libglycin-gtk4/build.rs
+@@ -15,11 +15,15 @@ fn main() {
+             // The import library (*.lib) always points at whatever /OUT:
+             // filename the DLL was linked with, so the final installed
+             // name has to be given to Cargo directly here
+-            let out_dir = std::env::var("OUT_DIR").unwrap();
+-            let profile_dir = std::path::Path::new(&out_dir)
+-                .ancestors()
+-                .nth(3)
++            // Newer Cargo versions use build/<crate>/<hash>/out instead of
++            // build/<crate>-<hash>/out, so find the profile directory relative
++            // to the "build" directory instead of a fixed ancestor count.
++            let out_dir = std::path::PathBuf::from(std::env::var("OUT_DIR").unwrap());
++            let profile_dir = out_dir
++                .ancestors()
++                .find(|path| path.file_name() == Some(std::ffi::OsStr::new("build")))
++                .and_then(std::path::Path::parent)
+                 .expect("OUT_DIR does not have the expected Cargo layout");
+             println!(
+                 "cargo:rustc-cdylib-link-arg=/OUT:{}",
+                 profile_dir
